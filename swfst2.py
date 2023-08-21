@@ -35,3 +35,4 @@ def go_to_login_page(browser):
     self.should_be_login_url()
     def should_be_login_url(self):
         assert "login" in self.browser.current_url, "URL does not contain 'login' substring"
+
