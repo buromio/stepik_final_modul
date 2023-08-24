@@ -10,8 +10,18 @@ class ProductPage(BasePage):
         button = self.browser.find_element(*ProductPageLocators.BASKET_BUTTON)
         button.click()
 
-    def should_be_success_message(self):
-        assert self.is_element_present(*ProductPageLocators.SUCCESS_MESSAGE), "Success message is not presented"
+    def should_be_message_about_adding(self):
+        # Сначала проверяем, что элементы присутствуют на странице
+        assert self.is_element_present(*ProductPageLocators.PRODUCT_NAME), (
+            "Product name is not presented")
+        assert self.is_element_present(*ProductPageLocators.MESSAGE_ABOUT_ADDING), (
+            "Message about adding is not presented")
+        # Затем получаем текст элементов для проверки
+        message = self.browser.find_element(*ProductPageLocators.MESSAGE_ABOUT_ADDING).text
+        product_name = self.browser.find_element(*ProductPageLocators.PRODUCT_NAME).text
+        # Проверяем, что название товара присутствует в сообщении о добавлении
+        assert product_name == message, \
+            f"The alert contains wrong product name: {message} - {product_name}"
 
     def should_be_basket_total_equal_to_product_price(self):
         product_price = self.browser.find_element(*ProductPageLocators.PRODUCT_PRICE).text
