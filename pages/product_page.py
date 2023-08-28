@@ -3,8 +3,11 @@ from .locators import ProductPageLocators
 from selenium.common.exceptions import NoAlertPresentException
 import math
 
-class ProductPage(BasePage):
 
+class ProductPage(BasePage):
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.MESSAGE_ABOUT_ADDING), \
+            "Success message is presented, but should not be"
 
     def add_to_basket(self):
         button = self.browser.find_element(*ProductPageLocators.BASKET_BUTTON)
@@ -27,6 +30,10 @@ class ProductPage(BasePage):
         product_price = self.browser.find_element(*ProductPageLocators.PRODUCT_PRICE).text
         basket_total = self.browser.find_element(*ProductPageLocators.BASKET_TOTAL).text
         assert product_price == basket_total, "Basket total is not equal to product price"
+
+    def success_message_should_disappear(self):
+        assert self.is_disappeared(*ProductPageLocators.MESSAGE_ABOUT_ADDING), \
+            "Success message is presented, but should not be"
 
     def solve_quiz_and_get_code(self):
         alert = self.browser.switch_to.alert
